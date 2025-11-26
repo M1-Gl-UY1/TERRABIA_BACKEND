@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.management.relation.Role;
 
+import com.m1sigl.terrabia.enums.Role_;
 import com.m1sigl.terrabia.enums.Sexe;
 
 import jakarta.persistence.*;
@@ -36,7 +37,7 @@ public class User {
     private String ville;
 
     @Enumerated(EnumType.STRING)
-    private Role role; // Pour savoir si c'est un admin, etc.
+    private Role_ role;
 
     // Relation pour la messagerie (User participe à des conversations)
     @ManyToMany
@@ -45,5 +46,5 @@ public class User {
         joinColumns = @JoinColumn(name = "idUser"),
         inverseJoinColumns = @JoinColumn(name = "idConversation")
     )
-    private List<LignePanier> conversations;
+    private List<Conversation> conversations;
 }
