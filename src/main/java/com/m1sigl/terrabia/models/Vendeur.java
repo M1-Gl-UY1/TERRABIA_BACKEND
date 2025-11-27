@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @PrimaryKeyJoinColumn(name = "id_user")
-public class Vendeur extends User {
+public class Vendeur extends Utilisateur {
 
     private String numeroCni;
     private Double note; // Système de notation
