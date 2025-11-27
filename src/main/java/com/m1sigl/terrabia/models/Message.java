@@ -1,6 +1,7 @@
 package com.m1sigl.terrabia.models;
 import java.time.LocalDateTime;
 
+import com.m1sigl.terrabia.enums.StatutMessage;
 import jakarta.persistence.*;
 import lombok.*;
 @Entity
@@ -16,6 +17,7 @@ public class Message {
     private String contenu;
 
     private LocalDateTime dateEnvoi;
+    private StatutMessage statut;
 
     @ManyToOne
     @JoinColumn(name = "id_user_emetteur")
