@@ -23,7 +23,6 @@ public interface ConversationRepository extends JpaRepository<Conversation, Long
 
     /**
      * Requete Personnalisée (JPQL)
-     * C'est une requete "Senior". On cherche une conversation C qui contient
      * l'utilisateur 1 ET l'utilisateur 2 dans sa liste de participants.
      *
      * @param userId1 ID de l'expéditeur

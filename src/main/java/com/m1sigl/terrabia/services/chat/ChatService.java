@@ -18,12 +18,12 @@ import java.util.List;
 @Service
 public class ChatService {
 
-    // On injecte nos repositories pour pouvoir parler à la BD
+
     private final MessageRepository messageRepository;
     private final ConversationRepository conversationRepository;
     private final UtilisateurRepository utilisateurRepository;
 
-    // Injection par constructeur
+
     public ChatService(MessageRepository messageRepository,
                        ConversationRepository conversationRepository,
                        UtilisateurRepository utilisateurRepository) {
