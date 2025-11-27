@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import com.m1sigl.terrabia.models.Acheteur;
 import com.m1sigl.terrabia.models.Vendeur;
 import com.m1sigl.terrabia.repository.AcheteurRepository;
-import com.m1sigl.terrabia.repository.UserRepository;
+import com.m1sigl.terrabia.repository.UtilisateurRepository;
 import com.m1sigl.terrabia.repository.VendeurRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -17,17 +17,17 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserService {
 
-    private final UserRepository userRepository;
+    private final UtilisateurRepository utilisateurRepository;
     private final VendeurRepository vendeurRepository;
     private final AcheteurRepository acheteurRepository;
 
     // Inscription générique ou spécifique
     public Utilisateur creerUtilisateur(Utilisateur utilisateur) {
-        if (userRepository.existsByEmail(utilisateur.getEmail())) {
+        if (utilisateurRepository.existsByEmail(utilisateur.getEmail())) {
             throw new RuntimeException("Email déjà utilisé");
         }
         // Ici, il faudrait encoder le mot de passe avec BCryptPasswordEncoder
-        return userRepository.save(utilisateur);
+        return utilisateurRepository.save(utilisateur);
     }
     
     public Vendeur creerVendeur(Vendeur vendeur) {
@@ -39,6 +39,6 @@ public class UserService {
     }
 
     public Optional<Utilisateur> findByEmail(String email) {
-        return userRepository.findByEmail(email);
+        return utilisateurRepository.findByEmail(email);
     }
 }

@@ -11,7 +11,7 @@ import com.m1sigl.terrabia.models.Conversation;
 import com.m1sigl.terrabia.models.Message;
 import com.m1sigl.terrabia.repository.ConversationRepository;
 import com.m1sigl.terrabia.repository.MessageRepository;
-import com.m1sigl.terrabia.repository.UserRepository;
+import com.m1sigl.terrabia.repository.UtilisateurRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,11 +21,11 @@ public class MessagerieService {
 
     private final ConversationRepository conversationRepository;
     private final MessageRepository messageRepository;
-    private final UserRepository userRepository;
+    private final UtilisateurRepository utilisateurRepository;
 
     public Conversation demarrerConversation(Long idUser1, Long idUser2) {
-        Utilisateur u1 = userRepository.findById(idUser1).orElseThrow();
-        Utilisateur u2 = userRepository.findById(idUser2).orElseThrow();
+        Utilisateur u1 = utilisateurRepository.findById(idUser1).orElseThrow();
+        Utilisateur u2 = utilisateurRepository.findById(idUser2).orElseThrow();
 
         Conversation conv = new Conversation();
         conv.setParticipants(Arrays.asList(u1, u2));
@@ -35,7 +35,7 @@ public class MessagerieService {
 
     public Message envoyerMessage(Long idConversation, Long idEmetteur, String contenu) {
         Conversation conv = conversationRepository.findById(idConversation).orElseThrow();
-        Utilisateur emetteur = userRepository.findById(idEmetteur).orElseThrow();
+        Utilisateur emetteur = utilisateurRepository.findById(idEmetteur).orElseThrow();
 
         Message msg = new Message();
         msg.setConversation(conv);
