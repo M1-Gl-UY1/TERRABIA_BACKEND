@@ -4,5 +4,4 @@ public enum Role_ {
     ADMIN,
     VENDEUR,
     ACHETEUR
-
 }

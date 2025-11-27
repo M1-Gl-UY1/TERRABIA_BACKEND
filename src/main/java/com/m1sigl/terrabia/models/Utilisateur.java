@@ -2,6 +2,7 @@ package com.m1sigl.terrabia.models;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.m1sigl.terrabia.enums.Role_;
 import com.m1sigl.terrabia.enums.Sexe;
 
@@ -25,8 +26,10 @@ public class Utilisateur {
     
     @Column(unique = true)
     private String email;
-    
-    private String password; // Indispensable pour l'auth
+
+    @JsonIgnore
+    private String password;
+
     private String numTel;
     
     @Enumerated(EnumType.STRING)
@@ -40,9 +43,10 @@ public class Utilisateur {
     // Relation pour la messagerie (User participe à des conversations)
     @ManyToMany
     @JoinTable(
-        name = "participer",
+        name = "participation_conversation",
         joinColumns = @JoinColumn(name = "idUser"),
         inverseJoinColumns = @JoinColumn(name = "idConversation")
     )
+    @JsonIgnore
     private List<Conversation> conversations;
 }

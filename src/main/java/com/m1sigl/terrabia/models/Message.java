@@ -1,6 +1,7 @@
 package com.m1sigl.terrabia.models;
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.m1sigl.terrabia.enums.StatutMessage;
 import jakarta.persistence.*;
 import lombok.*;
@@ -25,5 +26,6 @@ public class Message {
 
     @ManyToOne
     @JoinColumn(name = "id_conversation")
+    @JsonIgnoreProperties("messages")
     private Conversation conversation;
 }
