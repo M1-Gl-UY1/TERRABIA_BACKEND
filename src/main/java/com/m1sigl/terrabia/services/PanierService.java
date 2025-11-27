@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.m1sigl.terrabia.enums.StatutPanier;
 import com.m1sigl.terrabia.models.Acheteur;
 import com.m1sigl.terrabia.models.LignePanier;
 import com.m1sigl.terrabia.models.Panier;
@@ -28,7 +29,7 @@ public class PanierService {
 
     // Récupérer ou créer un panier ACTIF
     public Panier getPanierActif(Long idAcheteur) {
-        return panierRepository.findByAcheteur_IdUserAndStatut(idAcheteur, "ACTIF")
+        return panierRepository.findByAcheteur_IdUserAndStatut(idAcheteur, StatutPanier.ACTIF)
                 .orElseGet(() -> {
                     Acheteur acheteur = acheteurRepository.findById(idAcheteur)
                             .orElseThrow(() -> new RuntimeException("Acheteur introuvable"));

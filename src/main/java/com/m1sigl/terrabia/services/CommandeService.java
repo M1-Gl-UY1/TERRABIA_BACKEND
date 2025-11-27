@@ -12,7 +12,7 @@ import com.m1sigl.terrabia.models.LigneCommande;
 import com.m1sigl.terrabia.models.LignePanier;
 import com.m1sigl.terrabia.models.Panier;
 import com.m1sigl.terrabia.repository.CommandeRepository;
-import com.m1sigl.terrabia.repository.PanierRepository;
+
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ public class CommandeService {
 
     private final CommandeRepository commandeRepository;
     private final PanierService panierService;
-    private final PanierRepository panierRepository;
+    
 
     @Transactional
     public Commande passerCommande(Long idAcheteur) {

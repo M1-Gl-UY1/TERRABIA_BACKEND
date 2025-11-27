@@ -2,9 +2,7 @@ package com.m1sigl.terrabia.models;
 
 import java.util.List;
 
-import javax.management.relation.Role;
-
-import com.m1sigl.terrabia.enums.Role_;
+import com.m1sigl.terrabia.enums.Role;
 import com.m1sigl.terrabia.enums.Sexe;
 
 import jakarta.persistence.*;
@@ -13,7 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "_User") // Le nom dans le MLD est _User
+@Table(name = "_User")
 @Inheritance(strategy = InheritanceType.JOINED)
 @Data @NoArgsConstructor
 public class User {
@@ -28,7 +26,7 @@ public class User {
     @Column(unique = true)
     private String email;
     
-    private String password; // Indispensable pour l'auth
+    private String password;
     private String numTel;
     
     @Enumerated(EnumType.STRING)
@@ -37,14 +35,16 @@ public class User {
     private String ville;
 
     @Enumerated(EnumType.STRING)
-    private Role_ role;
+    private Role
+     role; 
 
-    // Relation pour la messagerie (User participe à des conversations)
+    
     @ManyToMany
     @JoinTable(
         name = "participer",
         joinColumns = @JoinColumn(name = "idUser"),
         inverseJoinColumns = @JoinColumn(name = "idConversation")
     )
+    
     private List<Conversation> conversations;
 }
