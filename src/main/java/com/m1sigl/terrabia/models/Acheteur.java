@@ -12,10 +12,10 @@ import lombok.NoArgsConstructor;
 @Data @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @PrimaryKeyJoinColumn(name = "id_user")
-public class Acheteur extends User {
+public class Acheteur extends Utilisateur {
 
-    @OneToOne(mappedBy = "acheteur", cascade = CascadeType.ALL)
-    private Panier panier;
+    @OneToMany(mappedBy = "acheteur", cascade = CascadeType.ALL)
+    private List<Panier> panier;
 
     @OneToMany(mappedBy = "acheteur")
     private List<Commande> commandes;

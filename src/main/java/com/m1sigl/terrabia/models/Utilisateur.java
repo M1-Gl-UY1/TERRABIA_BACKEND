@@ -2,8 +2,6 @@ package com.m1sigl.terrabia.models;
 
 import java.util.List;
 
-import javax.management.relation.Role;
-
 import com.m1sigl.terrabia.enums.Role_;
 import com.m1sigl.terrabia.enums.Sexe;
 
@@ -13,10 +11,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "_User") // Le nom dans le MLD est _User
+@Table(name = "Utilisateur")
 @Inheritance(strategy = InheritanceType.JOINED)
 @Data @NoArgsConstructor
-public class User {
+public class Utilisateur {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

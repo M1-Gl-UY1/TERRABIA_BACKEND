@@ -14,11 +14,18 @@ public class Conversation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idConversation;
 
-    private String sujet; // Optionnel
-
     // Liste des participants (Acheteurs, Vendeurs, Agences)
     @ManyToMany(mappedBy = "conversations")
-    private List<User> participants;
+    private List<Utilisateur> participants;
+
+    // Vérification côté Java pour 2 participants
+    @PrePersist
+    @PreUpdate
+    private void validateParticipants() {
+        if (participants.size() != 2) {
+            throw new RuntimeException("Une conversation doit avoir exactement 2 participants");
+        }
+    }
 
     @OneToMany(mappedBy = "conversation", cascade = CascadeType.ALL)
     private List<Message> messages;

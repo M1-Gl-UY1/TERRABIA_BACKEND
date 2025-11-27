@@ -1,4 +1,4 @@
-package com.m1sigl.terrabia.services;
+package com.m1sigl.terrabia.services.gestion_panier_commande;
 
 import java.util.ArrayList;
 import java.util.Optional;
