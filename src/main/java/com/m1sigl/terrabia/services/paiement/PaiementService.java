@@ -28,15 +28,14 @@ public class PaiementService {
     @Transactional
     public Paiement initierPaiement(InitPaiementDto dto){
 //        1. Vérifier que la commande existe et n'est pas déjà payée
-//        Optional<Commande> commande = commandeRepository.findById(dto.getCommandeId());
-//        if (<-commande.isPresent()){
-//            Double montantA_Payer = commande.get().getMontantTotal();
-        Double montantSimuler = 5000.0;
+        Optional<Commande> commande = commandeRepository.findById(dto.getCommandeId());
+        
+        Double montantA_Payer = commande.get().getMontantTotal();
 
         // 2. Créer l'objet Paiement en base (Statut EN_ATTENTE)
         Paiement paiement = new Paiement();
         paiement.setCommandeId(dto.getCommandeId());
-        paiement.setMontant(montantSimuler);
+        paiement.setMontant(montantA_Payer);
         paiement.setModePaiement(dto.getModePaiement());
         paiement.setStatut(StatutPaiement.EN_ATTENTE);
         paiement.setDatePaiement(LocalDateTime.now());
@@ -53,7 +52,7 @@ public class PaiementService {
         // 4. Mise à jour du statut selon la réponse du provider
         if (succesProvider){
             paiementSauvegarde.setStatut(StatutPaiement.VALIDE);
-//                commande.get().setStatut(StatutCommande.PAYEE);
+                commande.get().setStatut(StatutCommande.PAYEE);
         }else {
             paiementSauvegarde.setStatut(StatutPaiement.ECHOUE);
         }
