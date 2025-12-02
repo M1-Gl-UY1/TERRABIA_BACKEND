@@ -12,5 +12,8 @@ public class InitPaiementDto {
     @NotNull
     private ModePaiement modePaiement;
 
+    @NotNull
+    private String devise;
+
     private String numeroTelephone;
 }
