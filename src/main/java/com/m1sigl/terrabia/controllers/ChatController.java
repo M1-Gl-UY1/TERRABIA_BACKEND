@@ -4,8 +4,6 @@ import com.m1sigl.terrabia.dto.EnvoiMessageDto;
 import com.m1sigl.terrabia.dto.MessageResponseDto;
 import com.m1sigl.terrabia.models.Conversation;
 import com.m1sigl.terrabia.models.Message;
-import com.m1sigl.terrabia.models.Utilisateur;
-import com.m1sigl.terrabia.repository.UtilisateurRepository;
 import com.m1sigl.terrabia.services.chat.ChatService;
 import com.m1sigl.terrabia.utils.ChatMapper;
 import jakarta.validation.Valid;
