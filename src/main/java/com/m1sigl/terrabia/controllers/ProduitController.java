@@ -1,26 +1,21 @@
 package com.m1sigl.terrabia.controllers;
 
-import java.util.List;
-
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.m1sigl.terrabia.dto.ProduitCreateDTO;
 import com.m1sigl.terrabia.models.Categorie;
 import com.m1sigl.terrabia.models.Produit;
 import com.m1sigl.terrabia.models.Vendeur;
 import com.m1sigl.terrabia.repository.CategorieRepository;
 import com.m1sigl.terrabia.repository.VendeurRepository;
+import com.m1sigl.terrabia.services.FileStorageService;
 import com.m1sigl.terrabia.services.gestion_panier_commande.ProduitService;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.security.Principal;
 
 @RestController
 @RequestMapping("/api/produits")
@@ -29,43 +24,49 @@ import lombok.RequiredArgsConstructor;
 public class ProduitController {
 
     private final ProduitService produitService;
-    private final CategorieRepository categorieRepository;
+    private final FileStorageService fileStorageService;
     private final VendeurRepository vendeurRepository;
+    private final CategorieRepository categorieRepository;
 
-    @GetMapping
-    public List<Produit> getAll() {
-        return produitService.getAllProduits();
-    }
-    @GetMapping("/categorie/{idCat}")
-    public List<Produit> getByCategorie(@PathVariable Long idCat) {
-        return produitService.getProduitsParCategorie(idCat);
-    }
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasRole('VENDEUR')") // 🔒 Sécurité : Seul un vendeur passe
+    public ResponseEntity<?> createProduit(
+            @RequestParam("nom") String nom,
+            @RequestParam("prix") Double prix,
+            @RequestParam("quantite") Integer quantite,
+            @RequestParam("description") String description,
+            @RequestParam("idCategorie") Long idCategorie,
+            @RequestParam("image") MultipartFile image, // 📷 Le fichier image
+            Principal principal // 👤 L'utilisateur connecté (Token)
+    ) {
+        // 1. Identification du Vendeur via le Token (Sécurisé)
+        String email = principal.getName();
+        Vendeur vendeur = vendeurRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Vendeur introuvable"));
 
-    @PostMapping
-    public ResponseEntity<?> createProduit(@RequestBody ProduitCreateDTO dto) {
-        // Mapping manuel DTO -> Entity (Idéalement utiliser MapStruct)
+        // 2. Vérification catégorie
+        Categorie cat = categorieRepository.findById(idCategorie)
+                .orElseThrow(() -> new RuntimeException("Catégorie introuvable"));
+
+        // 3. Stockage de l'image
+        String fileName = fileStorageService.storeFile(image);
+        
+        // 4. Création de l'URL complète (ex: http://localhost:8081/uploads/xyz.jpg)
+        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/uploads/")
+                .path(fileName)
+                .toUriString();
+
+        // 5. Création et sauvegarde du produit
         Produit p = new Produit();
-        p.setNom(dto.getNom());
-        p.setPrix(dto.getPrix());
-        p.setQuantite(dto.getQuantite());
-        p.setDescription(dto.getDescription());
-        p.setPhotoUrl(dto.getPhotoUrl());
-
-        // Récupération des objets liés via les IDs du DTO
-        Categorie cat = categorieRepository.findById(dto.getIdCategorie())
-                .orElseThrow(() -> new RuntimeException("Catégorie inconnue"));
-        Vendeur vend = vendeurRepository.findById(dto.getIdVendeur())
-                .orElseThrow(() -> new RuntimeException("Vendeur inconnu"));
-
+        p.setNom(nom);
+        p.setPrix(prix);
+        p.setQuantite(quantite);
+        p.setDescription(description);
+        p.setPhotoUrl(fileDownloadUri); // On sauvegarde l'URL
+        p.setVendeur(vendeur);
         p.setCategorie(cat);
-        p.setVendeur(vend);
 
         return ResponseEntity.ok(produitService.ajouterProduit(p));
-    }
-    
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProduit(@PathVariable Long id) {
-        produitService.supprimerProduit(id);
-        return ResponseEntity.ok().build();
     }
 }
