@@ -10,7 +10,9 @@ import lombok.*;
 
 @Entity
 @Table(name = "commande")
-@Data @NoArgsConstructor
+@Data
+@Setter
+@NoArgsConstructor
 public class Commande {
 
     @Id
