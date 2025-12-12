@@ -69,7 +69,8 @@ public class JwtUtils {
     }
 
     private Key getSignInKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(java.util.Base64.getEncoder().encodeToString(SECRET_KEY.getBytes()));
+        // Utiliser directement les octets de la clé secrète pour générer une clé HMAC
+        byte[] keyBytes = SECRET_KEY.getBytes();
         return Keys.hmacShaKeyFor(keyBytes);
     }
 }
