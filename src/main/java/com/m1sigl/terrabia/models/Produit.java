@@ -1,5 +1,7 @@
 package com.m1sigl.terrabia.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,6 +23,7 @@ public class Produit {
 
     @ManyToOne
     @JoinColumn(name = "id_cat", nullable = false)
+    @JsonBackReference
     private Categorie categorie;
 
     @ManyToOne

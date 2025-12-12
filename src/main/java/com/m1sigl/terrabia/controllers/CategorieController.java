@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.m1sigl.terrabia.models.Categorie;
 import com.m1sigl.terrabia.repository.CategorieRepository;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import org.springframework.web.bind.annotation.RequestBody;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -32,8 +32,8 @@ public class CategorieController {
 
      @PostMapping
     // On autorise seulement les VENDEURS (ou ADMIN si tu as créé ce rôle) à ajouter des catégories
-    @PreAuthorize("hasRole('VENDEUR')") 
-    public ResponseEntity<Categorie> createCategorie(@RequestBody Categorie categorie) {
+    @PreAuthorize("hasRole('VENDEUR')")
+    public ResponseEntity<Categorie> createCategorie(@RequestBody @jakarta.validation.Valid Categorie categorie) {
         return ResponseEntity.ok(categorieRepository.save(categorie));
     }
 }
