@@ -2,7 +2,7 @@ package com.m1sigl.terrabia.models;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -24,6 +24,6 @@ public class Categorie {
     private String nomCat;
 
     @OneToMany(mappedBy = "categorie")
-    @JsonManagedReference
+    @JsonIgnore  // Ignore la liste des produits lors de la sérialisation JSON
     private List<Produit> produits;
 }

@@ -1,7 +1,5 @@
 package com.m1sigl.terrabia.models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,11 +17,10 @@ public class Produit {
     private Double prix;
     private Integer quantite; // Stock disponible
     private String description;
-    private String photoUrl; 
+    private String photoUrl;
 
     @ManyToOne
     @JoinColumn(name = "id_cat", nullable = false)
-    @JsonBackReference
     private Categorie categorie;
 
     @ManyToOne
